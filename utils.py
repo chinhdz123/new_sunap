@@ -7,12 +7,23 @@ import cv2
 import warnings
 import numpy as np
 from copy import deepcopy
+import json
 warnings.filterwarnings("ignore")
 cfg = get_cfg()
-cfg.merge_from_file(r"output\config.yaml")
+cfg.merge_from_file(r"output\config_circle.yaml")
 logger.info("start_load_md")
 predictor_circles = DefaultPredictor(cfg)
 logger.info("end_load_md")
+with open('data_json\data.json', 'r') as openfile:
+ 
+    # Reading from json file
+    json_object = json.load(openfile)
+
+#pre=processing for x data
+label_x_max = json_object["label_x_max"]
+label_y_max = json_object["label_y_max"]
+y_max = json_object["y_max"]
+x_max = json_object["x_max"]
 
 def convert_boxes(boxes):
     return boxes.tensor.numpy()
@@ -52,23 +63,23 @@ def convert_to_x_y_robot(x,y):
     model_x = torch.load(r"model\model_x.pth")
     model_y = torch.load(r"model\model_y.pth")
     X = []
-    xmax = max(x)
+    xmax = x_max
     x = [i/xmax for i in x]
     for item in x:
-        X.append([item**4,item**3,item**2,item])
+        X.append([item,item**2,item**3,item**4])
     X = torch.tensor(X,dtype=torch.float32)
     
     predicteds_X = model_x(X).detach().numpy()
-    predicteds_X = [math.floor(predicted_X.item()*310) for predicted_X in predicteds_X]
-    ymax = max(y)
+    predicteds_X = [math.floor(predicted_X.item()*label_x_max) for predicted_X in predicteds_X]
+    ymax = y_max
     y = [i/ymax for i in y]
     Y = []
     for item in y:
-        Y.append([item**4,item**3,item**2,item])
+        Y.append([item,item**2,item**3,item**4])
     Y = torch.tensor(Y,dtype=torch.float32)
 
     predicteds_Y = model_y(Y).detach().numpy()
-    predicteds_Y = [math.floor(predicted_Y.item()*81) for predicted_Y in predicteds_Y]
+    predicteds_Y = [math.floor(predicted_Y.item()*label_y_max) for predicted_Y in predicteds_Y]
 
     return predicteds_X,predicteds_Y
 

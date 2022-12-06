@@ -28,9 +28,11 @@ def speak(text):
     # engine.setProperty("voice", voice[1].id)
     # engine.say(text)
     # engine.runAndWait()
-    date_string = datetime.now().strftime("%d")
+    """ date_string = datetime.now().strftime("%d")
     tts = gTTS(text=text, lang = "vi")
     filename = "voice"+date_string +".mp3"
     tts.save(filename)
     playsound.playsound(filename)
     os.remove(filename)
+ """
+    pass

@@ -11,15 +11,16 @@ y_train = json_object["y_train"]
 y_test = json_object["y_test"]
 label_y_train = json_object["label_y_train"]
 label_y_test = json_object["label_y_test"]
+label_y_max = json_object["label_y_max"]
 
 Y_train = []
 for item in y_train:
-    Y_train.append([item**4,item**3,item**2,item])
+    Y_train.append([item,item**2,item**3,item**4])
 Y_train = torch.tensor(Y_train,dtype=torch.float32)
 
 Y_test = []
 for item in y_test:
-    Y_test.append([item**4,item**3,item**2,item])
+    Y_test.append([item,item**2,item**3,item**4])
 Y_test = torch.tensor(Y_test,dtype=torch.float32)
 
 label_y_train = torch.tensor(label_y_train,dtype=torch.float32)
@@ -76,6 +77,6 @@ for epoch in range(num_epochs):
 torch.save(model, r"model\model_y.pth")
 
 predicteds = model(Y_test).detach().numpy()
-print([predicted*81 for predicted in predicteds])
-print([label_y*81 for label_y in label_y_test])
+print([predicted*label_y_max for predicted in predicteds])
+print([label_y*label_y_max for label_y in label_y_test])
 

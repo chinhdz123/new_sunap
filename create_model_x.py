@@ -12,16 +12,18 @@ x_train = json_object["x_train"]
 x_test = json_object["x_test"]
 label_x_train = json_object["label_x_train"]
 label_x_test = json_object["label_x_test"]
+label_x_max = json_object["label_x_max"]
+
 # plt.scatter(x_train,label_x_train)
 # plt.show()
 X_train = []
 for item in x_train:
-    X_train.append([item**4,item**3,item**2,item])
+    X_train.append([item,item**2,item**3,item**4])
 X_train = torch.tensor(X_train,dtype=torch.float32)
 
 X_test = []
 for item in x_test:
-    X_test.append([item**4,item**3,item**2,item])
+    X_test.append([item,item**2,item**3,item**4])
 X_test = torch.tensor(X_test,dtype=torch.float32)
 
 label_x_train = torch.tensor(label_x_train,dtype=torch.float32)
@@ -78,6 +80,6 @@ for epoch in range(num_epochs):
 torch.save(model, r"model\model_x.pth")
 
 predicteds = model(X_train).detach().numpy()
-print([predicted*310 for predicted in predicteds])
-print([label_x*310 for label_x in label_x_train])
+print([predicted*label_x_max for predicted in predicteds])
+print([label_x*label_x_max for label_x in label_x_train])
 

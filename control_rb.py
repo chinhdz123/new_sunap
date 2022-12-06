@@ -9,13 +9,13 @@ class Control_robot():
             dType.DobotConnect.DobotConnect_NotFound: "DobotConnect_NotFound",
             dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
         self.api =  dType.load()
-        self.state = dType.ConnectDobot(self.api, "COM4", 115200)[0]
+        self.state = dType.ConnectDobot(self.api, "COM6", 115200)[0]
         if (self.state == dType.DobotConnect.DobotConnect_NoError):
             print("connect")
             #Clean Command Queued
             dType.SetQueuedCmdClear(self.api)
-            dType.SetPTPCoordinateParams(self.api,2000,2000,2000,2000,2000)
-            dType.SetPTPCommonParams(self.api, 2000, 2000, isQueued = 0)
+            dType.SetPTPCoordinateParams(self.api,500,500,500,500,500)
+            dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
             dType.SetHOMEParams(self.api, 250, 0, 50, 0, isQueued = 0)
             dType.SetPTPJointParams(self.api, 50, 50, 50, 50, 50, 50, 50, 50, isQueued = 0)
             dType.SetHOMECmd(self.api, temp = 0, isQueued = 0)
@@ -27,22 +27,31 @@ class Control_robot():
             if x_item<310:
                 print("x_item, y_item",x_item,y_item)
                 # for y_item in y:
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,60,10, isQueued=1)
-                dType.SetWAITCmd(self.api, 200, isQueued=1)
                 dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,30,10, isQueued=1)
+                dType.SetWAITCmd(self.api, 200, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,-30,10, isQueued=1)
                 # dType.SetWAITCmd(api, 200, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                 dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,60,10, isQueued=1)
-                dType.SetWAITCmd(self.api, 1000, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,30,10, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, 51,-247,30,10, isQueued=1)
+                dType.SetWAITCmd(self.api, 100, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
     def stop(self):
         dType.DisconnectDobot(self.api)
         print("stop")
     def up(self):
         x_pose,y_pose,z_pose = dType.GetPose(self.api)[:3]
-        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_pose,y_pose,z_pose+10,10, isQueued=1)
-        
+        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_pose,y_pose,z_pose+20,10, isQueued=1)
+    def down(self):
+        x_pose,y_pose,z_pose = dType.GetPose(self.api)[:3]
+        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_pose,y_pose,z_pose-20,10, isQueued=1)
+    def right(self):
+        x_pose,y_pose,z_pose = dType.GetPose(self.api)[:3]
+        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_pose,y_pose+20,z_pose,10, isQueued=1)
+    def left(self):
+        x_pose,y_pose,z_pose = dType.GetPose(self.api)[:3]
+        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_pose,y_pose-20,z_pose+10,10, isQueued=1)
     # def main(self,x,y):
     #     for x_item,y_item in zip(x,y):
     #         if x_item<315:
@@ -55,7 +64,7 @@ class Control_robot():
     #             dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
     #             dType.SetWAITCmd(self.api, 500, isQueued=1)
     #             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,60,10, isQueued=1)
-    #             dType.SetWAITCmd(self.api, 1000, isQueued=1)
+    #             dType.SetWAITCmd(self.api, 5000, isQueued=1)
     #             dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
     # def print(self):
     #     print(self.x_pose)
@@ -120,7 +129,7 @@ def control(key,x,y):
                     dType.SetEndEffectorSuctionCup(api, True,  True, isQueued=1)
                     dType.SetWAITCmd(api, 500, isQueued=1)
                     dType.SetPTPCmd(api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,60,10, isQueued=1)
-                    dType.SetWAITCmd(api, 1000, isQueued=1)
+                    dType.SetWAITCmd(api, 5000, isQueued=1)
                     dType.SetEndEffectorSuctionCup(api, True,  False, isQueued=1)
         if key == 'up':
            dType.SetPTPCmd(api,dType.PTPMode.PTPMOVLXYZMode,x_pose,y_pose,z_pose+10,10,isQueued=1) 
@@ -133,4 +142,4 @@ def control(key,x,y):
 
     #dType.DisconnectDobot(api)
 for i in range (10):
-    control('up',[100,125],[100,125]) """
+    control('up',[500,125],[500,125]) """
