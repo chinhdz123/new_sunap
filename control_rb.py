@@ -9,7 +9,7 @@ class Control_robot():
             dType.DobotConnect.DobotConnect_NotFound: "DobotConnect_NotFound",
             dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
         self.api =  dType.load()
-        self.state = dType.ConnectDobot(self.api, "COM6", 115200)[0]
+        self.state = dType.ConnectDobot(self.api, "COM5", 115200)[0]
         if (self.state == dType.DobotConnect.DobotConnect_NoError):
             print("connect")
             #Clean Command Queued
