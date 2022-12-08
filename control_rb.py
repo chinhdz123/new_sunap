@@ -22,25 +22,70 @@ class Control_robot():
             return True
         else: 
             return False
-    def grip(self,x,y):
-        for x_item,y_item in zip(x,y):
-            if x_item<310:
-                print("x_item, y_item",x_item,y_item)
-                # for y_item in y:
-                
-                # dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
-                # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
-                dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
-                # dType.SetWAITCmd(api, 200, isQueued=1)
-                dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
-                dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
-                # dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
-                dType.SetWAITCmd(self.api, 500, isQueued=1)
+    def grip(self,coordinates_rb):
+        print(len(coordinates_rb))
+        for count, coordinate in enumerate(coordinates_rb):
+            if len(coordinate)!= 0 :
+                x = coordinate[0]
+                y = coordinate[1]
+                for x_item,y_item in zip(x,y):
+                    if x_item<310:
+                        if count == 0:
+                            print("count",count)
+                            print("x_item, y_item",x_item,y_item)
+                            # for y_item in y:
+                            
+                            # dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
+                            # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
+                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
+                            # dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                        elif count ==1:
+                            print("count",count)
+
+                            print("x_item, y_item",x_item,y_item)
+                            # for y_item in y:
+                            
+                            # dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
+                            # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-15,10, isQueued=1)
+                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
+                            # dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                        elif count ==2:
+                            print("count",count)
+
+                            print("x_item, y_item",x_item,y_item)
+                            # for y_item in y:
+                            
+                            # dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
+                            # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,15,10, isQueued=1)
+                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
+                            # dType.SetWAITCmd(self.api, 500, isQueued=1)
+                            dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
+                            dType.SetWAITCmd(self.api, 500, isQueued=1) 
     def home(self):
         dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 0,-250,50,10, isQueued=1)
     def stop(self):

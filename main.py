@@ -69,22 +69,31 @@ class MainWindow:
         if self.start_robot:
             self.uic.bt_grid.setEnabled(False)
         if self.new_img_dt is not None:
-            circles, image = find_total_circles(self.new_img_dt)
+            total_circles, image = find_total_circles(self.new_img_dt)
             new_img_show = image[280:1500,468:1500]
-            image = cv2.resize(new_img_show,(531,341))
+            image = cv2.resize(new_img_show,(931,561))
             image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
             self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
+            len1 = 0
+            coordinates_rb = []
+            for circles in total_circles:
+                if len(circles)!=0:
+                    print(circles)
+                    len1+= len(circles)
+                    x = [circle[0] for circle in circles]
+                    y = [circle[1] for circle in circles]
+                    x_robot,y_robot = convert_to_x_y_robot(x,y)
+                    coordinates_rb.append([x_robot,y_robot])
+                else:
+                    coordinates_rb.append([])
 
-            self.uic.label_5.setText(str(len(circles)))
-            x = [circle[0] for circle in circles]
-            y = [circle[1] for circle in circles]
-            x_robot,y_robot = convert_to_x_y_robot(x,y)
+            self.uic.label_5.setText(str(len1))
             print(x_robot,y_robot)
 
             # bước 3: điều khiển robot theo các vị trí
             # self.control.start(x_robot,y_robot)
             # self.control.start()
-            self.control.grip(x_robot,y_robot)
+            self.control.grip(coordinates_rb)
             time.sleep(10)
             self.uic.bt_grid.setEnabled(True)
             print('a')
