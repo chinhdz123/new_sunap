@@ -46,6 +46,7 @@ def find_line_circles(circles):
 def find_circles_in_small_img(img,w_s, w_en):
     logger.info("start predict")
     output = predictor_circles(img)
+    logger.info("end predict")
     boxes = output["instances"].to("cpu").pred_boxes if output["instances"].to("cpu").has("pred_boxes") else None
     if boxes is not None:
         boxes = convert_boxes(boxes)
@@ -85,24 +86,25 @@ def convert_to_x_y_robot(x,y):
 
 def find_total_circles(img):
     h,w= img.shape[:2]
-    img1 = np.ones_like(img)
-    img2 = np.ones_like(img)
+    # img1 = np.ones_like(img)
+    # img2 = np.ones_like(img)
 
-    img1[:,:int(5.2*w/10)] = img[:,:int(5.2*w/10)]
-    img2[:,int(4.8*w/10):] = img[:,int(4.8*w/10):]
-    circles1 = find_circles_in_small_img(img1, 0, int(5.2*w/10))
-    circles2 = find_circles_in_small_img(img2,int(4.8*w/10),w )
-    circles = circles1 + circles2
-    new_circles = deepcopy(circles)
-    for circle1 in  circles1:
-        for circle2 in circles2:
-            if ((circle2[0]-circle1[0])**2+(circle2[1]-circle1[1])**2)**(1/2) < 0.8*max(circle2[2],circle1[2]):
-                if circle2[2] < circle1[2]:
-                    new_circles.remove(circle2)
-                else:
-                    new_circles.remove(circle1)
-
-    circles = sorted(new_circles, key=lambda b: b[1])
+    # img1[:,:int(5.2*w/10)] = img[:,:int(5.2*w/10)]
+    # img2[:,int(4.8*w/10):] = img[:,int(4.8*w/10):]
+    # circles1 = find_circles_in_small_img(img1, 0, int(5.2*w/10))
+    # circles2 = find_circles_in_small_img(img2,int(4.8*w/10),w )
+    # circles = circles1 + circles2
+    # new_circles = deepcopy(circles)
+    # for circle1 in  circles1:
+    #     for circle2 in circles2:
+    #         if ((circle2[0]-circle1[0])**2+(circle2[1]-circle1[1])**2)**(1/2) < 0.8*max(circle2[2],circle1[2]):
+    #             if circle2[2] < circle1[2]:
+    #                 new_circles.remove(circle2)
+    #             else:
+    #                 new_circles.remove(circle1)
+    circles = find_circles_in_small_img(img,0,w)
+    # circles = sorted(new_circles, key=lambda b: b[1])
+    circles = sorted(circles, key=lambda b: b[1])
     group_lines = find_line_circles(circles)
     new_circle = []
     count = 0

@@ -105,6 +105,7 @@ class MainWindow:
         self.uic.label_time_1.setText(current_time)
 
     def capture(self):
+        self.control.home()
         camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
 
         # Grabing Continusely (video) with minimal delay
@@ -120,15 +121,15 @@ class MainWindow:
                 # Access the image data
                 image = converter.Convert(grabResult)
                 img = image.GetArray()
-                new_img = img[280:1500,468:1381]# cần chỉnh
+                new_img = img[280:1500,468:1500]# cần chỉnh
                 new_img_dt = np.ones_like(img)
-                new_img_dt[280:1500,468:1381] = img[280:1500,468:1381]
+                new_img_dt[280:1500,468:1500] = img[280:1500,468:1500]
                 cv2.imwrite("tmp/new.jpg",new_img_dt)
                 self.new_img_dt = new_img_dt
                 break
             grabResult.Release()
         camera.StopGrabbing()
-        image = cv2.resize(new_img,(531,341))
+        image = cv2.resize(new_img,(931,561))
         image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
         self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
 

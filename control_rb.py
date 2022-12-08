@@ -14,10 +14,10 @@ class Control_robot():
             print("connect")
             #Clean Command Queued
             dType.SetQueuedCmdClear(self.api)
-            dType.SetPTPCoordinateParams(self.api,500,500,500,500,500)
+            dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
             dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
             dType.SetHOMEParams(self.api, 250, 0, 50, 0, isQueued = 0)
-            dType.SetPTPJointParams(self.api, 50, 50, 50, 50, 50, 50, 50, 50, isQueued = 0)
+            dType.SetPTPJointParams(self.api, 500, 500, 500, 500, 500, 500, 500, 500, isQueued = 0)
             dType.SetHOMECmd(self.api, temp = 0, isQueued = 0)
             return True
         else: 
@@ -27,16 +27,22 @@ class Control_robot():
             if x_item<310:
                 print("x_item, y_item",x_item,y_item)
                 # for y_item in y:
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,30,10, isQueued=1)
-                dType.SetWAITCmd(self.api, 200, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,-30,10, isQueued=1)
+                
+                # dType.SetPTPCoordinateParams(self.api,500,500,500,500,0)
+                # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                dType.SetWAITCmd(self.api, 500, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
                 # dType.SetWAITCmd(api, 200, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                 dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, x_item,y_item,30,10, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVLXYZMode, 51,-247,30,10, isQueued=1)
-                dType.SetWAITCmd(self.api, 100, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
+                # dType.SetWAITCmd(self.api, 500, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
+                dType.SetWAITCmd(self.api, 500, isQueued=1)
+    def home(self):
+        dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 0,-250,50,10, isQueued=1)
     def stop(self):
         dType.DisconnectDobot(self.api)
         print("stop")
