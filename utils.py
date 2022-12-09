@@ -81,6 +81,39 @@ def find_circles_in_small_img(img,w_s, w_en):
 
     return [circles1,circles2,circles3]
 
+def find_total_circles(img):
+    h,w= img.shape[:2]
+    total_circles = find_circles_in_small_img(img,0,w)
+    print(total_circles)
+    n_total_circles = []
+    classes = ["c1","c2","c3"]
+    for circles,classs in zip(total_circles,classes):
+        if len(circles) != 0:
+            circles = sorted(circles, key=lambda b: b[1])
+            group_lines = find_line_circles(circles)
+            new_circle = []
+            count = 0
+            for group_line in group_lines:
+                group_line = sorted(group_line, key=lambda b: b[0])
+                for circle in  group_line:
+                    # if count == 39 or count == 40:
+                    #if counts == 0 & counts == 1:
+                    cv2.circle(img, (circle[0], circle[1]), circle[2], (0, 0, 255), 1)
+                    cv2.circle(img, (circle[0], circle[1]), 2, (0, 0, 255), 1)
+                    cv2.putText(img, classs+str(count), (circle[0], circle[1]), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 1)
+                    count +=1
+                    new_circle.append(circle)
+                    # elif counts == 2:
+                    #     cv2.rectangle(img,((circle[0]-circle[3]),(circle[1]-circle[3])),((circle[0]+circle[3]),(circle[0]+circle[3])),(0,0,255),2)
+                    #     cv2.putText(img, classs+str(count), (circle[0], circle[1]), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 1)
+                    #     count +=1
+                    #     new_circle.append(circle)
+            n_total_circles.append(new_circle)
+        else:
+            n_total_circles.append(circles)
+    return n_total_circles,img
+
+
 def convert_to_x_y_robot(x,y):
     model_x = torch.load(r"model\model_x.pth")
     model_y = torch.load(r"model\model_y.pth")
@@ -104,34 +137,3 @@ def convert_to_x_y_robot(x,y):
     predicteds_Y = [math.floor(predicted_Y.item()*label_y_max) for predicted_Y in predicteds_Y]
 
     return predicteds_X,predicteds_Y
-
-def find_total_circles(img):
-    h,w= img.shape[:2]
-
-    total_circles = find_circles_in_small_img(img,0,w)
-    print(total_circles)
-    n_total_circles = []
-    classes = ["c1","c2","c3"]
-    for circles,classs in zip(total_circles,classes):
-        if len(circles) != 0:
-            circles = sorted(circles, key=lambda b: b[1])
-            group_lines = find_line_circles(circles)
-            new_circle = []
-            count = 0
-            for group_line in group_lines:
-                group_line = sorted(group_line, key=lambda b: b[0])
-                for circle in group_line:
-                    # if count == 39 or count == 40:
-                    cv2.circle(img, (circle[0], circle[1]), circle[2], (0, 255, 0), 1)
-                    cv2.circle(img, (circle[0], circle[1]), 2, (0, 0, 255), 1)
-                    cv2.putText(img, classs+str(count), (circle[0], circle[1]), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 1)
-                    count +=1
-                    new_circle.append(circle)
-            n_total_circles.append(new_circle)
-        else:
-            n_total_circles.append(circles)
-
-
-    return n_total_circles,img
-
-
