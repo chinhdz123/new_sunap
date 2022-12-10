@@ -29,7 +29,7 @@ class Control_robot():
                 x = coordinate[0]
                 y = coordinate[1]
                 for x_item,y_item in zip(x,y):
-                    if x_item<310:
+                    if x_item<310 and x_item>170:
                         if count == 0:
                             print("count",count)
                             print("x_item, y_item",x_item,y_item)
@@ -39,12 +39,12 @@ class Control_robot():
                             # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
-                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-30,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 200, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,50,10, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, -20,-245,30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 100,-210,30,10, isQueued=1)
                             # dType.SetWAITCmd(self.api, 500, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
@@ -58,12 +58,12 @@ class Control_robot():
                             # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-15,10, isQueued=1)
-                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-18,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 200, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,50,10, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, -40,-155,30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 20,-210,30,10, isQueued=1)
                             # dType.SetWAITCmd(self.api, 500, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
@@ -77,8 +77,8 @@ class Control_robot():
                             # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-7,10, isQueued=1)
-                            # dType.SetWAITCmd(api, 200, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-10,10, isQueued=1)
+                            dType.SetWAITCmd(self.api, 200, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,70,10, isQueued=1)
