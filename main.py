@@ -14,6 +14,7 @@ import time
 from mypackage.speak_hear import *
 from pypylon import pylon
 import cv2
+from calib import *
 class MainWindow:
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -70,7 +71,7 @@ class MainWindow:
             self.uic.bt_grid.setEnabled(False)
         if self.new_img_dt is not None:
             total_circles, image = find_total_circles(self.new_img_dt)
-            new_img_show = image[280:1400,550:1400]
+            new_img_show = image[800:1600,450:1400]
             image = cv2.resize(new_img_show,(931,561))
             image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
             self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
@@ -130,15 +131,19 @@ class MainWindow:
                 # Access the image data
                 image = converter.Convert(grabResult)
                 img = image.GetArray()
-                new_img = img[280:1400,550:1400]# cần chỉnh
+                new_img = img[800:1600,450:1400]# cần chỉnh
                 new_img_dt = np.ones_like(img)
-                new_img_dt[280:1400,550:1400] = img[280:1400,550:1400]
+                new_img_dt[800:1600,450:1400] = img[800:1600,450:1400]
                 cv2.imwrite("tmp/new.jpg",new_img_dt)
                 self.new_img_dt = new_img_dt
                 break
             grabResult.Release()
         camera.StopGrabbing()
-        image = cv2.resize(new_img,(931,561))
+        image = cv2.resize(new_img,(931,561)) 
+        image = calib(image) 
+        cv2.imwrite("calib.jpg",image)
+        image = cv2.imread(r"calib.jpg")
+
         image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
         self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
 

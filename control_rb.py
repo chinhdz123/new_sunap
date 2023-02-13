@@ -39,7 +39,7 @@ class Control_robot():
                             # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
                             dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
-                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-30,10, isQueued=1)
+                            dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
                             dType.SetWAITCmd(self.api, 200, isQueued=1)
                             dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                             dType.SetWAITCmd(self.api, 500, isQueued=1)
