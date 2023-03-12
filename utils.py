@@ -10,7 +10,7 @@ from copy import deepcopy
 import json
 warnings.filterwarnings("ignore")
 cfg = get_cfg()
-cfg.merge_from_file(r"output\config_circle.yaml")
+cfg.merge_from_file(r"output\config.yaml")
 logger.info("start_load_md")
 predictor_circles = DefaultPredictor(cfg)
 logger.info("end_load_md")

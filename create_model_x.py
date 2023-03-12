@@ -82,4 +82,5 @@ torch.save(model, r"model\model_x.pth")
 predicteds = model(X_train).detach().numpy()
 print([predicted*label_x_max for predicted in predicteds])
 print([label_x*label_x_max for label_x in label_x_train])
+print(model.parameters())
 

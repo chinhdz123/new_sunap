@@ -9,7 +9,7 @@ class Control_robot():
             dType.DobotConnect.DobotConnect_NotFound: "DobotConnect_NotFound",
             dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
         self.api =  dType.load()
-        self.state = dType.ConnectDobot(self.api, "COM6", 115200)[0]
+        self.state = dType.ConnectDobot(self.api, "COM3", 115200)[0]
         if (self.state == dType.DobotConnect.DobotConnect_NoError):
             print("connect")
             #Clean Command Queued
@@ -32,12 +32,12 @@ class Control_robot():
                 # dType.SetPTPCommonParams(self.api, 500, 500, isQueued = 0)
                 dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
                 dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-25,10, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,-20,10, isQueued=1)
                 # dType.SetWAITCmd(api, 200, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  True, isQueued=1)
                 dType.SetWAITCmd(self.api, 500, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,30,10, isQueued=1)
-                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,30,10, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, x_item,y_item,75,10, isQueued=1)
+                dType.SetPTPCmd(self.api,  dType.PTPMode.PTPMOVJXYZMode, 51,-247,75,10, isQueued=1)
                 # dType.SetWAITCmd(self.api, 500, isQueued=1)
                 dType.SetEndEffectorSuctionCup(self.api, True,  False, isQueued=1)
                 dType.SetWAITCmd(self.api, 500, isQueued=1)

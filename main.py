@@ -14,6 +14,7 @@ import time
 from mypackage.speak_hear import *
 from pypylon import pylon
 import cv2
+from calib import calib
 class MainWindow:
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -38,6 +39,8 @@ class MainWindow:
     def show(self):
         self.main_win.show()
     def start(self):
+        time.sleep(5)
+
         self.start_robot = self.control.start()
         if self.start_robot:
             self.uic.bt_start.setEnabled(False)
@@ -70,24 +73,24 @@ class MainWindow:
             self.uic.bt_grid.setEnabled(False)
         if self.new_img_dt is not None:
             circles, image = find_total_circles(self.new_img_dt)
-            new_img_show = image[280:1500,468:1500]
-            image = cv2.resize(new_img_show,(531,341))
+            # new_img_show = image[280:1400,468:1400]
+            image = cv2.resize(image,(531,341))
             image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
             self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
 
             self.uic.label_5.setText(str(len(circles)))
             x = [circle[0] for circle in circles]
             y = [circle[1] for circle in circles]
-            x_robot,y_robot = convert_to_x_y_robot(x,y)
-            print(x_robot,y_robot)
+            x_robot,y_robot = convert_to_x_y_robot(y,x)
+            print(x,y)
 
             # bước 3: điều khiển robot theo các vị trí
             # self.control.start(x_robot,y_robot)
             # self.control.start()
+            time.sleep(15)
             self.control.grip(x_robot,y_robot)
             time.sleep(10)
             self.uic.bt_grid.setEnabled(True)
-            print('a')
             
 
 
@@ -105,31 +108,31 @@ class MainWindow:
         self.uic.label_time_1.setText(current_time)
 
     def capture(self):
-        self.control.home()
-        camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+        # self.control.home()
+        # camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
 
-        # Grabing Continusely (video) with minimal delay
-        camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) 
-        converter = pylon.ImageFormatConverter()
+        # # Grabing Continusely (video) with minimal delay
+        # camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) 
+        # converter = pylon.ImageFormatConverter()
 
-        # converting to opencv bgr format
-        converter.OutputPixelFormat = pylon.PixelType_BGR8packed
-        converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
-        while camera.IsGrabbing():
-            grabResult = camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-            if grabResult.GrabSucceeded():
-                # Access the image data
-                image = converter.Convert(grabResult)
-                img = image.GetArray()
-                new_img = img[280:1500,468:1500]# cần chỉnh
+        # # converting to opencv bgr format
+        # converter.OutputPixelFormat = pylon.PixelType_BGR8packed
+        # converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
+        while True:
+            # grabResult = camera.RetrieveResult(4000, pylon.TimeoutHandling_ThrowException)
+            # if grabResult.GrabSucceeded():
+                # image = converter.Convert(grabResult)
+                img = cv2.imread(r"C:\Users\Admin\Downloads\9.bmp")
+                img = calib(img)
+                # new_img = img[700:-400,300:1400]
                 new_img_dt = np.ones_like(img)
-                new_img_dt[280:1500,468:1500] = img[280:1500,468:1500]
-                cv2.imwrite("tmp/new.jpg",new_img_dt)
-                self.new_img_dt = new_img_dt
+                new_img_dt[400:-700,300:1400] = img[400:-700,300:1400]
+                # cv2.imwrite("tmp/new.jpg",new_img_dt)
+                self.new_img_dt = new_img_dt[400:-700,300:1400]
                 break
-            grabResult.Release()
-        camera.StopGrabbing()
-        image = cv2.resize(new_img,(531,341))
+        #     grabResult.Release()
+        # camera.StopGrabbing()
+        image = cv2.resize(self.new_img_dt,(531,341))
         image = QImage(image,image.shape[1],image.shape[0],image.strides[0],QImage.Format_RGB888)
         self.uic.label_2.setPixmap(QtGui.QPixmap.fromImage(image))
 
